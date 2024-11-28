@@ -25,14 +25,14 @@ class UserService:
             )
         new_user = self.user_repository.create_user(db, user_name, user_group)
         background_task.add_task(
-            self.process_file,
+            self.process_content,
             user_id=new_user.uuid,
             db=db,
             url="https://api.github.com/",
         )
         return new_user
 
-    async def process_file(self, user_id: str, db: Session, url: json):
+    async def process_content(self, user_id: str, db: Session, url: json):
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
             file_content = response.text
