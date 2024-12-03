@@ -2,7 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DB_URL = "sqlite:///./users.db"
+from app.core.config import get_sqlalchemy_db_url
+
+SQLALCHEMY_DB_URL = get_sqlalchemy_db_url()
 
 engine = create_engine(SQLALCHEMY_DB_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
