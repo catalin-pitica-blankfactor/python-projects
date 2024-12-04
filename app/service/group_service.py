@@ -1,12 +1,8 @@
-from enum import Enum
 from typing import Any
 from sqlalchemy.orm import Session
+
+from app.core.constants import GroupType
 from app.repository.group_repository import GroupRepository
-
-
-class GroupType(str, Enum):
-    REGULAR = "regular"
-    ADMIN = "admin"
 
 
 class GroupService:
