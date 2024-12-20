@@ -26,7 +26,6 @@ async def create_group(
     except KeyError as e:
         raise HTTPException(status_code=404, detail=e.args[0])
 
-
 @router.get("/group", response_model=list[GroupResponseForGet])
 async def get_all_groups(
     db: Session = Depends(get_db), group_service: GroupService = Depends()
@@ -35,7 +34,6 @@ async def get_all_groups(
         return group_service.get_all_groups(db)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=e.args[0])
-
 
 @router.get("/group/{group_id}", response_model=GroupResponseForGet)
 async def get_group_by_id(
@@ -46,8 +44,7 @@ async def get_group_by_id(
     try:
         return group_service.get_group_by_id(db, group_id)
     except KeyError as e:
-        raise HTTPException(status_code=404, detail=e.args[0])
-
+        raise HTTPException(status_code=404, detail=e.args[0]
 
 @router.put("/group/{group_id}", response_model=GroupResponseForCreate)
 async def update_group(

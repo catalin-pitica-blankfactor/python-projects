@@ -32,7 +32,6 @@ async def create_user(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=e.args[0])
 
-
 @router.get("/user", response_model=list[UserResponseForGet])
 async def get_all_users(
     db: Session = Depends(get_db), user_service: UserService = Depends()
