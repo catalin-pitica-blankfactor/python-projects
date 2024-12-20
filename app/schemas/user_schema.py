@@ -15,7 +15,7 @@ class UserResponse(BaseModel):
     uuid: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserResponseForGet(BaseModel):
@@ -25,4 +25,5 @@ class UserResponseForGet(BaseModel):
     url: dict
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+

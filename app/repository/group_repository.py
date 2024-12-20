@@ -10,7 +10,7 @@ class GroupRepository:
     def get_all_groups(self, db: Session):
         return db.query(Group).all()
 
-    def check_exist_group_name(selfself, db: Session, group_name):
+    def check_exist_group_name(self, db: Session, group_name):
         return db.query(Group).filter(Group.name == group_name).first()
 
     def create_group(self, db: Session, name: str):
@@ -21,7 +21,7 @@ class GroupRepository:
         db.refresh(db_group)
         return db_group
 
-    def update_group(selfself, db: Session, group_id: str, group_name: str):
+    def update_group(self, db: Session, group_id: str, group_name: str):
         db.query(Group).filter(Group.uuid == group_id).update({Group.name: group_name})
         db.commit()
         db_group_update = db.query(Group).filter(Group.uuid == group_id).first()

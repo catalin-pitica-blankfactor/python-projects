@@ -9,4 +9,4 @@ class User(Base):
     uuid = Column(String, primary_key=True, index=True)
     name = Column(String, index=True)
     urls = Column(JSON, index=True, nullable=True)
-    group = relationship("Group", secondary="user_group")
+    group = relationship("Group", secondary="user_group", back_populates="user", overlaps="user")

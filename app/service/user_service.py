@@ -32,7 +32,7 @@ class UserService:
         )
         return new_user
 
-    async def process_content(self, user_id: str, db: Session, url: json):
+    async def process_content(self, user_id: str, db: Session, url: str):
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
             file_content = response.text
@@ -79,7 +79,7 @@ class UserService:
         group_name_from_user = [group.name for group in user.group]
         if group_name not in group_name_from_user:
             raise ValueError(
-                f"Group {group_name_from_user} does not not part of the user id {user.uuid}"
+                f"Group {group_name} does not part of the user id {user.uuid}"
             )
 
     def update_user(self, db: Session, user_id: str, user_name: str):

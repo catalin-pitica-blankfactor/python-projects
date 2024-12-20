@@ -9,7 +9,7 @@ class GroupResponseForCreate(BaseModel):
     uuid: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class GroupResponseForGet(BaseModel):
@@ -17,4 +17,4 @@ class GroupResponseForGet(BaseModel):
     name: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
