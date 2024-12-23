@@ -1,17 +1,13 @@
 from unittest import TestCase
-from unittest.mock import MagicMock, patch
-
+from unittest.mock import MagicMock, create_autospec
 from fastapi import BackgroundTasks
-from fastapi.exceptions import ResponseValidationError
-from pydantic import ValidationError, BaseModel
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
-
 from app.core.database import get_db
 from app.main import app
 from app.schemas.user_schema import UserResponseForGet
 from app.service.group_service import GroupService
-
 from app.service.user_service import UserService
 
 client = TestClient(app)
@@ -21,15 +17,13 @@ class TestUserApi(TestCase):
 
     db: Session
 
-    @patch("app.api.user.UserService")
-    @patch("app.api.user.GroupService")
-    def setUp(self, MockUserService, MockGroupService):
+    def setUp(self):
 
-        self.mock_user_service = MockUserService.return_value
-        self.mock_group_service = MockGroupService.return_value
+        self.mock_user_service = MagicMock(spec=UserService)
+        self.mock_group_service = MagicMock(spec=GroupService)
         app.dependency_overrides[UserService] = lambda: self.mock_user_service
         app.dependency_overrides[GroupService] = lambda: self.mock_group_service
-        self.mock_db = MagicMock()
+        self.mock_db = create_autospec(Session)
         app.dependency_overrides[get_db] = lambda: self.mock_db
 
         self.validation_error = MagicMock()
@@ -43,6 +37,7 @@ class TestUserApi(TestCase):
         }
 
     def tearDown(self):
+
         app.dependency_overrides = {}
 
     def test_create_user_success(self):
@@ -126,6 +121,7 @@ class TestUserApi(TestCase):
         )
 
     def test_get_all_users_success(self):
+
         self.mock_user_service.get_all_users.return_value = [self.user1]
 
         response = client.get("/user")
@@ -164,6 +160,7 @@ class TestUserApi(TestCase):
         self.mock_user_service.get_all_users.assert_called_once_with(self.mock_db)
 
     def test_get_user_by_id_success(self):
+
         self.mock_user_service.get_user_by_id.return_value = self.user1
 
         response = client.get(f"/user/{self.user1['uuid']}")
@@ -176,6 +173,7 @@ class TestUserApi(TestCase):
         )
 
     def test_get_user_by_id_not_found(self):
+
         self.mock_user_service.get_user_by_id.side_effect = KeyError("User not found")
 
         response = client.get("/user/non-existent-id")
@@ -188,6 +186,7 @@ class TestUserApi(TestCase):
         )
 
     def test_update_user_success(self):
+
         self.mock_user_service.check_user_validation.return_value = self.user1
         self.mock_user_service.update_user.return_value = self.user1
 
@@ -249,6 +248,7 @@ class TestUserApi(TestCase):
         )
 
     def test_delete_user_by_id_success(self):
+
         response = client.delete(f"/user/{self.user1['uuid']}")
 
         self.assertEqual(response.status_code, 200)
@@ -258,6 +258,7 @@ class TestUserApi(TestCase):
         )
 
     def test_delete_user_not_found(self):
+
         self.mock_user_service.delete_user_by_id.side_effect = KeyError(
             "User not found"
         )

@@ -1,10 +1,10 @@
 from unittest import TestCase
 from unittest.mock import create_autospec, patch, MagicMock
-
 from sqlalchemy.orm import Session
 
 
 class TestUserRepository(TestCase):
+
     db: Session
     mock_user1 = MagicMock()
     mock_user1.uuid = "510a0b32-d4e5-40bb-bc6e-a7ddbd2cacb3"
@@ -29,6 +29,7 @@ class TestUserRepository(TestCase):
     mock_group.name = "regular"
 
     def setUp(self):
+
         super().setUp()
         from app.repository.user_repository import UserRepository
         from app.model.user_model import User
@@ -62,6 +63,7 @@ class TestUserRepository(TestCase):
         self.assertEqual(retrieved_user, self.mock_user1)
 
     def test_get_all_users(self):
+
         mock_users = [self.mock_user1, self.mock_user2]
 
         mock_query = self.db.query.return_value
@@ -129,6 +131,7 @@ class TestUserRepository(TestCase):
         self.db.refresh.assert_called_once_with(self.mock_user1)
 
     def test_update_user(self):
+
         new_user_name = "updated name"
 
         self.db.query.return_value.filter.return_value.first.return_value = (

@@ -1,12 +1,9 @@
 from unittest import TestCase
 from unittest.mock import MagicMock, create_autospec
-
 from sqlalchemy.orm import Session
-
 from app.core.database import get_db
 from app.main import app
 from fastapi.testclient import TestClient
-
 from app.service.group_service import GroupService
 
 
@@ -35,6 +32,7 @@ class TestGroupAPI(TestCase):
         }
 
     def tearDown(self):
+
         app.dependency_overrides = {}
 
     def test_create_group(self):
@@ -54,6 +52,7 @@ class TestGroupAPI(TestCase):
         )
 
     def test_create_group_value_error_when_group_name_already_exists(self):
+
         self.mock_group_service.check_existing_group_name.side_effect = ValueError(
             "Group name already exists"
         )
@@ -168,6 +167,7 @@ class TestGroupAPI(TestCase):
         )
 
     def test_update_group_raises_value_error_when_group_name_already_exists(self):
+
         group_id = "1234-abcd"
         updated_name = "new-group-name"
         self.mock_group_service.get_group_by_id.return_value = {

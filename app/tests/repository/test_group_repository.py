@@ -1,6 +1,5 @@
 from unittest import TestCase
 from unittest.mock import MagicMock, create_autospec, patch
-
 from sqlalchemy.orm import Session
 
 
@@ -18,7 +17,6 @@ class TestGroupRepository(TestCase):
 
     def setUp(self):
 
-        super().setUp()
         from app.repository.group_repository import GroupRepository
         from app.model.group_model import Group
 
@@ -100,6 +98,7 @@ class TestGroupRepository(TestCase):
         self.assertEqual(updated_group.name, updated_group_name)
 
     def test_delete_group_by_id(self):
+
         mock_query = self.db.query.return_value
         mock_query.filter.return_value.first.return_value = self.mock_group1
 
